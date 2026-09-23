@@ -17,7 +17,7 @@ export function OpportunityDetailPage({ id }: { id: string }) {
   const opportunity = opportunities.find((item) => item.id === id);
   const [tone, setTone] = useState<Tone>("Professionnel");
   const [assistantOpen, setAssistantOpen] = useState(false);
-  const [assistantAction, setAssistantAction] = useState(actions[1]);
+  const [assistantAction, setAssistantAction] = useState<string>("Générer un email");
   const [variant, setVariant] = useState(0);
 
   const content = useMemo(() => opportunity ? buildAssistantText(opportunity, assistantAction, tone, variant) : "", [assistantAction, opportunity, tone, variant]);
