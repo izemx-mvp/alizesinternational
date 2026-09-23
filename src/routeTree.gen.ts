@@ -10,33 +10,151 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AlertesRouteImport } from './routes/alertes'
+import { Route as CiblagePrioritaireRouteImport } from './routes/ciblage-prioritaire'
+import { Route as GrilleScoringRouteImport } from './routes/grille-scoring'
+import { Route as MotsClesRouteImport } from './routes/mots-cles'
+import { Route as NouvelleRechercheRouteImport } from './routes/nouvelle-recherche'
+import { Route as OpportunitesRouteImport } from './routes/opportunites'
+import { Route as ProspectsRouteImport } from './routes/prospects'
+import { Route as SourcesDeVeilleRouteImport } from './routes/sources-de-veille'
+import { Route as OpportunitesRouteImport } from './routes/opportunites.'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AlertesRoute = AlertesRouteImport.update({
+  id: '/alertes',
+  path: '/alertes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CiblagePrioritaireRoute = CiblagePrioritaireRouteImport.update({
+  id: '/ciblage-prioritaire',
+  path: '/ciblage-prioritaire',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GrilleScoringRoute = GrilleScoringRouteImport.update({
+  id: '/grille-scoring',
+  path: '/grille-scoring',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MotsClesRoute = MotsClesRouteImport.update({
+  id: '/mots-cles',
+  path: '/mots-cles',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NouvelleRechercheRoute = NouvelleRechercheRouteImport.update({
+  id: '/nouvelle-recherche',
+  path: '/nouvelle-recherche',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OpportunitesRoute = OpportunitesRouteImport.update({
+  id: '/opportunites',
+  path: '/opportunites',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProspectsRoute = ProspectsRouteImport.update({
+  id: '/prospects',
+  path: '/prospects',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SourcesDeVeilleRoute = SourcesDeVeilleRouteImport.update({
+  id: '/sources-de-veille',
+  path: '/sources-de-veille',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OpportunitesRoute = OpportunitesRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => OpportunitesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/alertes': typeof AlertesRoute
+  '/ciblage-prioritaire': typeof CiblagePrioritaireRoute
+  '/grille-scoring': typeof GrilleScoringRoute
+  '/mots-cles': typeof MotsClesRoute
+  '/nouvelle-recherche': typeof NouvelleRechercheRoute
+  '/opportunites': typeof OpportunitesRouteWithChildren
+  '/prospects': typeof ProspectsRoute
+  '/sources-de-veille': typeof SourcesDeVeilleRoute
+  '/opportunites/': typeof OpportunitesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/alertes': typeof AlertesRoute
+  '/ciblage-prioritaire': typeof CiblagePrioritaireRoute
+  '/grille-scoring': typeof GrilleScoringRoute
+  '/mots-cles': typeof MotsClesRoute
+  '/nouvelle-recherche': typeof NouvelleRechercheRoute
+  '/prospects': typeof ProspectsRoute
+  '/sources-de-veille': typeof SourcesDeVeilleRoute
+  '/opportunites': typeof OpportunitesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/alertes': typeof AlertesRoute
+  '/ciblage-prioritaire': typeof CiblagePrioritaireRoute
+  '/grille-scoring': typeof GrilleScoringRoute
+  '/mots-cles': typeof MotsClesRoute
+  '/nouvelle-recherche': typeof NouvelleRechercheRoute
+  '/opportunites': typeof OpportunitesRouteWithChildren
+  '/prospects': typeof ProspectsRoute
+  '/sources-de-veille': typeof SourcesDeVeilleRoute
+  '/opportunites/': typeof OpportunitesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/alertes'
+    | '/ciblage-prioritaire'
+    | '/grille-scoring'
+    | '/mots-cles'
+    | '/nouvelle-recherche'
+    | '/opportunites'
+    | '/prospects'
+    | '/sources-de-veille'
+    | '/opportunites/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/alertes'
+    | '/ciblage-prioritaire'
+    | '/grille-scoring'
+    | '/mots-cles'
+    | '/nouvelle-recherche'
+    | '/prospects'
+    | '/sources-de-veille'
+    | '/opportunites'
+  id:
+    | '__root__'
+    | '/'
+    | '/alertes'
+    | '/ciblage-prioritaire'
+    | '/grille-scoring'
+    | '/mots-cles'
+    | '/nouvelle-recherche'
+    | '/opportunites'
+    | '/prospects'
+    | '/sources-de-veille'
+    | '/opportunites/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AlertesRoute: typeof AlertesRoute
+  CiblagePrioritaireRoute: typeof CiblagePrioritaireRoute
+  GrilleScoringRoute: typeof GrilleScoringRoute
+  MotsClesRoute: typeof MotsClesRoute
+  NouvelleRechercheRoute: typeof NouvelleRechercheRoute
+  OpportunitesRoute: typeof OpportunitesRouteWithChildren
+  ProspectsRoute: typeof ProspectsRoute
+  SourcesDeVeilleRoute: typeof SourcesDeVeilleRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +166,94 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/alertes': {
+      id: '/alertes'
+      path: '/alertes'
+      fullPath: '/alertes'
+      preLoaderRoute: typeof AlertesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ciblage-prioritaire': {
+      id: '/ciblage-prioritaire'
+      path: '/ciblage-prioritaire'
+      fullPath: '/ciblage-prioritaire'
+      preLoaderRoute: typeof CiblagePrioritaireRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/grille-scoring': {
+      id: '/grille-scoring'
+      path: '/grille-scoring'
+      fullPath: '/grille-scoring'
+      preLoaderRoute: typeof GrilleScoringRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mots-cles': {
+      id: '/mots-cles'
+      path: '/mots-cles'
+      fullPath: '/mots-cles'
+      preLoaderRoute: typeof MotsClesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nouvelle-recherche': {
+      id: '/nouvelle-recherche'
+      path: '/nouvelle-recherche'
+      fullPath: '/nouvelle-recherche'
+      preLoaderRoute: typeof NouvelleRechercheRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/opportunites': {
+      id: '/opportunites'
+      path: '/opportunites'
+      fullPath: '/opportunites'
+      preLoaderRoute: typeof OpportunitesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/prospects': {
+      id: '/prospects'
+      path: '/prospects'
+      fullPath: '/prospects'
+      preLoaderRoute: typeof ProspectsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sources-de-veille': {
+      id: '/sources-de-veille'
+      path: '/sources-de-veille'
+      fullPath: '/sources-de-veille'
+      preLoaderRoute: typeof SourcesDeVeilleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/opportunites/': {
+      id: '/opportunites/'
+      path: '/'
+      fullPath: '/opportunites/'
+      preLoaderRoute: typeof OpportunitesRouteImport
+      parentRoute: typeof OpportunitesRoute
+    }
   }
 }
 
+interface OpportunitesRouteChildren {
+  OpportunitesRoute: typeof OpportunitesRoute
+}
+
+const OpportunitesRouteChildren: OpportunitesRouteChildren = {
+  OpportunitesRoute: OpportunitesRoute,
+}
+
+const OpportunitesRouteWithChildren = OpportunitesRoute._addFileChildren(
+  OpportunitesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AlertesRoute: AlertesRoute,
+  CiblagePrioritaireRoute: CiblagePrioritaireRoute,
+  GrilleScoringRoute: GrilleScoringRoute,
+  MotsClesRoute: MotsClesRoute,
+  NouvelleRechercheRoute: NouvelleRechercheRoute,
+  OpportunitesRoute: OpportunitesRouteWithChildren,
+  ProspectsRoute: ProspectsRoute,
+  SourcesDeVeilleRoute: SourcesDeVeilleRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

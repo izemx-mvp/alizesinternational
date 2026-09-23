@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { OpportunityDetailPage } from "@/components/alize/OpportunityDetail";
 
-export const Route = createFileRoute("/opportunites/$id")({
+export const Route = createFileRoute("/opportunites/")({
   head: () => ({ meta: [
     { title: "Détail opportunité — ALIZÉ INTERNATIONAL" },
     { name: "description", content: "Détail d’une opportunité événementielle avec signaux, score, contacts et assistant IA." },

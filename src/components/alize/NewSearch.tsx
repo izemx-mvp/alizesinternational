@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { CheckCircle2, Plus, Search, Sparkles, X } from "lucide-react";
 import { toast } from "sonner";
@@ -102,6 +102,6 @@ export function NewSearchPage() {
   );
 }
 
-function Criteria({ title, children }: { title: string; children: React.ReactNode }) {
+function Criteria({ title, children }: { title: string; children: ReactNode }) {
   return <div><h2 className="mb-3 font-display text-base font-semibold">{title}</h2>{children}</div>;
 }
