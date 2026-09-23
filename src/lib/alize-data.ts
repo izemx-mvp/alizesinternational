@@ -206,7 +206,12 @@ const rows = [
 
 export const initialOpportunities: Opportunity[] = rows.map((row, index) => {
   const [company, country, city, sector, size, eventType, opportunity, signal, score, status, detectedAt, horizon, destination, employees] = row;
-  const baseContacts = [contactPool[index % contactPool.length], contactPool[(index + 5) % contactPool.length], contactPool[(index + 9) % contactPool.length]];
+  const fallbackContact: Contact = { id: "c-fallback", name: "Sophie Martin", role: "Event Manager", influence: "Décideur principal", score: 92, email: "s.martin@example.com" };
+  const baseContacts: Contact[] = [
+    contactPool[index % contactPool.length] ?? fallbackContact,
+    contactPool[(index + 5) % contactPool.length] ?? fallbackContact,
+    contactPool[(index + 9) % contactPool.length] ?? fallbackContact,
+  ];
   return {
     id: `opp-${index + 1}`,
     company,
