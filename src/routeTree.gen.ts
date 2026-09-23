@@ -18,7 +18,7 @@ import { Route as NouvelleRechercheRouteImport } from './routes/nouvelle-recherc
 import { Route as OpportunitesRouteImport } from './routes/opportunites'
 import { Route as ProspectsRouteImport } from './routes/prospects'
 import { Route as SourcesDeVeilleRouteImport } from './routes/sources-de-veille'
-import { Route as OpportunitesRouteImport } from './routes/opportunites.'
+import { Route as OpportunitesIdRouteImport } from './routes/opportunites.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -65,9 +65,9 @@ const SourcesDeVeilleRoute = SourcesDeVeilleRouteImport.update({
   path: '/sources-de-veille',
   getParentRoute: () => rootRouteImport,
 } as any)
-const OpportunitesRoute = OpportunitesRouteImport.update({
-  id: '/',
-  path: '/',
+const OpportunitesIdRoute = OpportunitesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
   getParentRoute: () => OpportunitesRoute,
 } as any)
 
@@ -81,7 +81,7 @@ export interface FileRoutesByFullPath {
   '/opportunites': typeof OpportunitesRouteWithChildren
   '/prospects': typeof ProspectsRoute
   '/sources-de-veille': typeof SourcesDeVeilleRoute
-  '/opportunites/': typeof OpportunitesRoute
+  '/opportunites/$id': typeof OpportunitesIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -90,9 +90,10 @@ export interface FileRoutesByTo {
   '/grille-scoring': typeof GrilleScoringRoute
   '/mots-cles': typeof MotsClesRoute
   '/nouvelle-recherche': typeof NouvelleRechercheRoute
+  '/opportunites': typeof OpportunitesRouteWithChildren
   '/prospects': typeof ProspectsRoute
   '/sources-de-veille': typeof SourcesDeVeilleRoute
-  '/opportunites': typeof OpportunitesRoute
+  '/opportunites/$id': typeof OpportunitesIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -105,7 +106,7 @@ export interface FileRoutesById {
   '/opportunites': typeof OpportunitesRouteWithChildren
   '/prospects': typeof ProspectsRoute
   '/sources-de-veille': typeof SourcesDeVeilleRoute
-  '/opportunites/': typeof OpportunitesRoute
+  '/opportunites/$id': typeof OpportunitesIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -119,7 +120,7 @@ export interface FileRouteTypes {
     | '/opportunites'
     | '/prospects'
     | '/sources-de-veille'
-    | '/opportunites/'
+    | '/opportunites/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -128,9 +129,10 @@ export interface FileRouteTypes {
     | '/grille-scoring'
     | '/mots-cles'
     | '/nouvelle-recherche'
+    | '/opportunites'
     | '/prospects'
     | '/sources-de-veille'
-    | '/opportunites'
+    | '/opportunites/$id'
   id:
     | '__root__'
     | '/'
@@ -142,7 +144,7 @@ export interface FileRouteTypes {
     | '/opportunites'
     | '/prospects'
     | '/sources-de-veille'
-    | '/opportunites/'
+    | '/opportunites/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -222,22 +224,22 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SourcesDeVeilleRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/opportunites/': {
-      id: '/opportunites/'
-      path: '/'
-      fullPath: '/opportunites/'
-      preLoaderRoute: typeof OpportunitesRouteImport
+    '/opportunites/$id': {
+      id: '/opportunites/$id'
+      path: '/$id'
+      fullPath: '/opportunites/$id'
+      preLoaderRoute: typeof OpportunitesIdRouteImport
       parentRoute: typeof OpportunitesRoute
     }
   }
 }
 
 interface OpportunitesRouteChildren {
-  OpportunitesRoute: typeof OpportunitesRoute
+  OpportunitesIdRoute: typeof OpportunitesIdRoute
 }
 
 const OpportunitesRouteChildren: OpportunitesRouteChildren = {
-  OpportunitesRoute: OpportunitesRoute,
+  OpportunitesIdRoute: OpportunitesIdRoute,
 }
 
 const OpportunitesRouteWithChildren = OpportunitesRoute._addFileChildren(
