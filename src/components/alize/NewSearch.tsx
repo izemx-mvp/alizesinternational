@@ -95,7 +95,7 @@ export function NewSearchPage() {
             <div className="space-y-2">{steps.map((item, index) => <div key={item} className="flex items-center gap-3 rounded-lg bg-panel-soft p-3 text-sm"><CheckCircle2 className={index <= step ? "size-4 text-success" : "size-4 text-muted-foreground"} /><span className={index <= step ? "font-medium text-foreground" : "text-muted-foreground"}>{item}</span></div>)}</div>
             {done ? <div className="rounded-xl border bg-accent p-4 text-accent-foreground"><p className="font-semibold">Analyse terminée</p><p className="mt-1 text-sm">24 opportunités identifiées · 7 opportunités Priorité A · 18 décideurs identifiés</p></div> : null}
           </div>
-          <DialogFooter>{done ? <Button onClick={() => navigate({ to: "/opportunites", search: { simulated: "true" } })}>Afficher les résultats</Button> : <Button disabled><Search className="animate-pulse" />Analyse</Button>}</DialogFooter>
+          <DialogFooter>{done ? <Button onClick={() => navigate({ to: "/opportunites" })}>Afficher les résultats</Button> : <Button disabled><Search className="animate-pulse" />Analyse</Button>}</DialogFooter>
         </DialogContent>
       </Dialog>
     </div>
