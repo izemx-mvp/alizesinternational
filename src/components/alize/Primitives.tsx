@@ -120,17 +120,24 @@ export function MultiSelectChips({ options, value, onChange }: { options: string
       {options.map((option) => {
         const checked = value.includes(option);
         return (
-          <button
+          <div
             key={option}
-            type="button"
+            role="button"
+            tabIndex={0}
             onClick={() => onChange(checked ? value.filter((item) => item !== option) : [...value, option])}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                onChange(checked ? value.filter((item) => item !== option) : [...value, option]);
+              }
+            }}
             className={cn(
-              "rounded-lg border px-3 py-2 text-left text-sm transition hover:border-primary hover:bg-secondary",
+              "cursor-pointer rounded-lg border px-3 py-2 text-left text-sm transition hover:border-primary hover:bg-secondary",
               checked ? "border-primary bg-secondary text-primary" : "bg-card text-foreground",
             )}
           >
-            <span className="flex items-center gap-2"><Checkbox checked={checked} />{option}</span>
-          </button>
+            <span className="flex items-center gap-2"><Checkbox checked={checked} aria-hidden tabIndex={-1} />{option}</span>
+          </div>
         );
       })}
     </div>
