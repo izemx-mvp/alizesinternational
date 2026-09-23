@@ -7,6 +7,8 @@ export const Route = createFileRoute("/opportunites/")({
     { name: "description", content: "Détail d’une opportunité événementielle avec signaux, score, contacts et assistant IA." },
     { property: "og:title", content: "Détail opportunité — ALIZÉ INTERNATIONAL" },
     { property: "og:description", content: "Analyse IA simulée, contacts recommandés et génération de message commercial." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
   ] }),
   component: RouteComponent,
 });

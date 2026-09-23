@@ -7,6 +7,8 @@ export const Route = createFileRoute("/sources-de-veille")({
     { name: "description", content: "Sources simulées de veille commerciale et événementielle pour l’agent IA." },
     { property: "og:title", content: "Sources de veille — ALIZÉ INTERNATIONAL" },
     { property: "og:description", content: "Activez ou désactivez les sources de signaux utilisées dans la démonstration." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
   ] }),
   component: WatchSourcesPage,
 });

@@ -7,6 +7,8 @@ export const Route = createFileRoute("/opportunites")({
     { name: "description", content: "Liste filtrable des opportunités événementielles détectées et scorées par l’agent IA." },
     { property: "og:title", content: "Opportunités — ALIZÉ INTERNATIONAL" },
     { property: "og:description", content: "Consultez, filtrez, priorisez et traitez les opportunités commerciales simulées." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
   ] }),
   component: OpportunitiesPage,
 });
