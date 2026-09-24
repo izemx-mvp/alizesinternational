@@ -33,7 +33,7 @@ export function LoginPage() {
     const parsed = schema.safeParse({ email, password });
     if (!parsed.success) {
       const f = parsed.error.flatten().fieldErrors;
-      setErrors({ email: f.email?.[0], password: f.password?.[0] });
+      setErrors({ email: f.email?.[0] ?? "", password: f.password?.[0] ?? "" });
       return;
     }
     setErrors({});

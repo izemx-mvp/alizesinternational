@@ -181,9 +181,9 @@ export function UsersPage() {
         <DialogContent>
           <DialogHeader><DialogTitle>{editing ? "Modifier l’utilisateur" : "Ajouter un utilisateur"}</DialogTitle><DialogDescription>{editing ? fullName(editing) : "Aucun email réel n’est envoyé : l’invitation est simulée."}</DialogDescription></DialogHeader>
           <div className="grid gap-4 sm:grid-cols-2">
-            <Field label="Prénom" error={errors.firstName}><Input value={form.firstName} onChange={(e) => setForm({ ...form, firstName: e.target.value })} /></Field>
-            <Field label="Nom" error={errors.lastName}><Input value={form.lastName} onChange={(e) => setForm({ ...form, lastName: e.target.value })} /></Field>
-            <div className="sm:col-span-2"><Field label="Adresse email" error={errors.email}><Input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} /></Field></div>
+            <Field label="Prénom" error={errors["firstName"]}><Input value={form.firstName} onChange={(e) => setForm({ ...form, firstName: e.target.value })} /></Field>
+            <Field label="Nom" error={errors["lastName"]}><Input value={form.lastName} onChange={(e) => setForm({ ...form, lastName: e.target.value })} /></Field>
+            <div className="sm:col-span-2"><Field label="Adresse email" error={errors["email"]}><Input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} /></Field></div>
             <Field label="Rôle"><Select value={form.role} onValueChange={(v) => setForm({ ...form, role: v as Role })}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent>{roles.map((r) => <SelectItem key={r} value={r}>{r}</SelectItem>)}</SelectContent></Select></Field>
             <Field label="Statut"><Select value={form.active ? "a" : "i"} onValueChange={(v) => setForm({ ...form, active: v === "a" })}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent><SelectItem value="a">Actif</SelectItem><SelectItem value="i">Inactif</SelectItem></SelectContent></Select></Field>
           </div>
