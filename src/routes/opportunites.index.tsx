@@ -10,5 +10,9 @@ export const Route = createFileRoute("/opportunites/")({
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
   ] }),
+  validateSearch: (search: Record<string, unknown>): { status?: string; country?: string } => ({
+    ...(typeof search.status === "string" ? { status: search.status } : {}),
+    ...(typeof search.country === "string" ? { country: search.country } : {}),
+  }),
   component: OpportunitiesPage,
 });

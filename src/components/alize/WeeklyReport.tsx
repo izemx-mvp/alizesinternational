@@ -145,7 +145,7 @@ export function WeeklyReportPage() {
             <div key={i} className="relative rounded-xl border bg-panel-soft p-3 transition hover:border-primary">
               <p className="text-[11px] font-semibold uppercase leading-4 text-muted-foreground">{funnelLabels[i]}</p>
               <p className="mt-2 font-display text-2xl font-semibold">{v}</p>
-              <div className="mt-3 h-1.5 rounded-full bg-secondary"><div className="h-1.5 rounded-full bg-primary transition-all duration-700" style={{ width: `${Math.max(6, (v / (week.funnel[0] || 1)) * 100 * (i ? 3 : 1)) > 100 ? 100 - i * 10 : Math.max(6, (v / (week.funnel[0] || 1)) * 300)}%` }} /></div>
+              <div className="mt-3 h-1.5 rounded-full bg-secondary"><div className="h-1.5 rounded-full bg-primary transition-all duration-700" style={{ width: `${Math.max(8, 100 - i * 13)}%` }} /></div>
               {i < 6 ? <ArrowRight className="absolute -right-3 top-1/2 z-10 size-5 -translate-y-1/2 rounded-full bg-card p-0.5 text-primary" /> : null}
             </div>
           ))}

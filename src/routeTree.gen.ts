@@ -13,13 +13,18 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AlertesRouteImport } from './routes/alertes'
 import { Route as CiblagePrioritaireRouteImport } from './routes/ciblage-prioritaire'
 import { Route as GrilleScoringRouteImport } from './routes/grille-scoring'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as MotsClesRouteImport } from './routes/mots-cles'
 import { Route as NouvelleRechercheRouteImport } from './routes/nouvelle-recherche'
 import { Route as OpportunitesRouteImport } from './routes/opportunites'
 import { Route as ProspectsRouteImport } from './routes/prospects'
+import { Route as RapportHebdomadaireRouteImport } from './routes/rapport-hebdomadaire'
 import { Route as SourcesDeVeilleRouteImport } from './routes/sources-de-veille'
+import { Route as UtilisateursRouteImport } from './routes/utilisateurs'
 import { Route as OpportunitesIndexRouteImport } from './routes/opportunites.index'
 import { Route as OpportunitesIdRouteImport } from './routes/opportunites.$id'
+import { Route as UtilisateursIndexRouteImport } from './routes/utilisateurs.index'
+import { Route as UtilisateursIdRouteImport } from './routes/utilisateurs.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -39,6 +44,11 @@ const CiblagePrioritaireRoute = CiblagePrioritaireRouteImport.update({
 const GrilleScoringRoute = GrilleScoringRouteImport.update({
   id: '/grille-scoring',
   path: '/grille-scoring',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MotsClesRoute = MotsClesRouteImport.update({
@@ -61,9 +71,19 @@ const ProspectsRoute = ProspectsRouteImport.update({
   path: '/prospects',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RapportHebdomadaireRoute = RapportHebdomadaireRouteImport.update({
+  id: '/rapport-hebdomadaire',
+  path: '/rapport-hebdomadaire',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SourcesDeVeilleRoute = SourcesDeVeilleRouteImport.update({
   id: '/sources-de-veille',
   path: '/sources-de-veille',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UtilisateursRoute = UtilisateursRouteImport.update({
+  id: '/utilisateurs',
+  path: '/utilisateurs',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OpportunitesIndexRoute = OpportunitesIndexRouteImport.update({
@@ -76,31 +96,50 @@ const OpportunitesIdRoute = OpportunitesIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => OpportunitesRoute,
 } as any)
+const UtilisateursIndexRoute = UtilisateursIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => UtilisateursRoute,
+} as any)
+const UtilisateursIdRoute = UtilisateursIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => UtilisateursRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/alertes': typeof AlertesRoute
   '/ciblage-prioritaire': typeof CiblagePrioritaireRoute
   '/grille-scoring': typeof GrilleScoringRoute
+  '/login': typeof LoginRoute
   '/mots-cles': typeof MotsClesRoute
   '/nouvelle-recherche': typeof NouvelleRechercheRoute
   '/opportunites': typeof OpportunitesRouteWithChildren
   '/prospects': typeof ProspectsRoute
+  '/rapport-hebdomadaire': typeof RapportHebdomadaireRoute
   '/sources-de-veille': typeof SourcesDeVeilleRoute
+  '/utilisateurs': typeof UtilisateursRouteWithChildren
   '/opportunites/$id': typeof OpportunitesIdRoute
+  '/utilisateurs/$id': typeof UtilisateursIdRoute
   '/opportunites/': typeof OpportunitesIndexRoute
+  '/utilisateurs/': typeof UtilisateursIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/alertes': typeof AlertesRoute
   '/ciblage-prioritaire': typeof CiblagePrioritaireRoute
   '/grille-scoring': typeof GrilleScoringRoute
+  '/login': typeof LoginRoute
   '/mots-cles': typeof MotsClesRoute
   '/nouvelle-recherche': typeof NouvelleRechercheRoute
   '/prospects': typeof ProspectsRoute
+  '/rapport-hebdomadaire': typeof RapportHebdomadaireRoute
   '/sources-de-veille': typeof SourcesDeVeilleRoute
   '/opportunites/$id': typeof OpportunitesIdRoute
+  '/utilisateurs/$id': typeof UtilisateursIdRoute
   '/opportunites': typeof OpportunitesIndexRoute
+  '/utilisateurs': typeof UtilisateursIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -108,13 +147,18 @@ export interface FileRoutesById {
   '/alertes': typeof AlertesRoute
   '/ciblage-prioritaire': typeof CiblagePrioritaireRoute
   '/grille-scoring': typeof GrilleScoringRoute
+  '/login': typeof LoginRoute
   '/mots-cles': typeof MotsClesRoute
   '/nouvelle-recherche': typeof NouvelleRechercheRoute
   '/opportunites': typeof OpportunitesRouteWithChildren
   '/prospects': typeof ProspectsRoute
+  '/rapport-hebdomadaire': typeof RapportHebdomadaireRoute
   '/sources-de-veille': typeof SourcesDeVeilleRoute
+  '/utilisateurs': typeof UtilisateursRouteWithChildren
   '/opportunites/$id': typeof OpportunitesIdRoute
+  '/utilisateurs/$id': typeof UtilisateursIdRoute
   '/opportunites/': typeof OpportunitesIndexRoute
+  '/utilisateurs/': typeof UtilisateursIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -123,38 +167,52 @@ export interface FileRouteTypes {
     | '/alertes'
     | '/ciblage-prioritaire'
     | '/grille-scoring'
+    | '/login'
     | '/mots-cles'
     | '/nouvelle-recherche'
     | '/opportunites'
     | '/prospects'
+    | '/rapport-hebdomadaire'
     | '/sources-de-veille'
+    | '/utilisateurs'
     | '/opportunites/$id'
+    | '/utilisateurs/$id'
     | '/opportunites/'
+    | '/utilisateurs/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/alertes'
     | '/ciblage-prioritaire'
     | '/grille-scoring'
+    | '/login'
     | '/mots-cles'
     | '/nouvelle-recherche'
     | '/prospects'
+    | '/rapport-hebdomadaire'
     | '/sources-de-veille'
     | '/opportunites/$id'
+    | '/utilisateurs/$id'
     | '/opportunites'
+    | '/utilisateurs'
   id:
     | '__root__'
     | '/'
     | '/alertes'
     | '/ciblage-prioritaire'
     | '/grille-scoring'
+    | '/login'
     | '/mots-cles'
     | '/nouvelle-recherche'
     | '/opportunites'
     | '/prospects'
+    | '/rapport-hebdomadaire'
     | '/sources-de-veille'
+    | '/utilisateurs'
     | '/opportunites/$id'
+    | '/utilisateurs/$id'
     | '/opportunites/'
+    | '/utilisateurs/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -162,11 +220,14 @@ export interface RootRouteChildren {
   AlertesRoute: typeof AlertesRoute
   CiblagePrioritaireRoute: typeof CiblagePrioritaireRoute
   GrilleScoringRoute: typeof GrilleScoringRoute
+  LoginRoute: typeof LoginRoute
   MotsClesRoute: typeof MotsClesRoute
   NouvelleRechercheRoute: typeof NouvelleRechercheRoute
   OpportunitesRoute: typeof OpportunitesRouteWithChildren
   ProspectsRoute: typeof ProspectsRoute
+  RapportHebdomadaireRoute: typeof RapportHebdomadaireRoute
   SourcesDeVeilleRoute: typeof SourcesDeVeilleRoute
+  UtilisateursRoute: typeof UtilisateursRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -199,6 +260,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GrilleScoringRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/mots-cles': {
       id: '/mots-cles'
       path: '/mots-cles'
@@ -227,11 +295,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProspectsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/rapport-hebdomadaire': {
+      id: '/rapport-hebdomadaire'
+      path: '/rapport-hebdomadaire'
+      fullPath: '/rapport-hebdomadaire'
+      preLoaderRoute: typeof RapportHebdomadaireRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sources-de-veille': {
       id: '/sources-de-veille'
       path: '/sources-de-veille'
       fullPath: '/sources-de-veille'
       preLoaderRoute: typeof SourcesDeVeilleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/utilisateurs': {
+      id: '/utilisateurs'
+      path: '/utilisateurs'
+      fullPath: '/utilisateurs'
+      preLoaderRoute: typeof UtilisateursRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/opportunites/': {
@@ -247,6 +329,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/opportunites/$id'
       preLoaderRoute: typeof OpportunitesIdRouteImport
       parentRoute: typeof OpportunitesRoute
+    }
+    '/utilisateurs/': {
+      id: '/utilisateurs/'
+      path: '/'
+      fullPath: '/utilisateurs/'
+      preLoaderRoute: typeof UtilisateursIndexRouteImport
+      parentRoute: typeof UtilisateursRoute
+    }
+    '/utilisateurs/$id': {
+      id: '/utilisateurs/$id'
+      path: '/$id'
+      fullPath: '/utilisateurs/$id'
+      preLoaderRoute: typeof UtilisateursIdRouteImport
+      parentRoute: typeof UtilisateursRoute
     }
   }
 }
@@ -265,16 +361,33 @@ const OpportunitesRouteWithChildren = OpportunitesRoute._addFileChildren(
   OpportunitesRouteChildren,
 )
 
+interface UtilisateursRouteChildren {
+  UtilisateursIdRoute: typeof UtilisateursIdRoute
+  UtilisateursIndexRoute: typeof UtilisateursIndexRoute
+}
+
+const UtilisateursRouteChildren: UtilisateursRouteChildren = {
+  UtilisateursIdRoute: UtilisateursIdRoute,
+  UtilisateursIndexRoute: UtilisateursIndexRoute,
+}
+
+const UtilisateursRouteWithChildren = UtilisateursRoute._addFileChildren(
+  UtilisateursRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AlertesRoute: AlertesRoute,
   CiblagePrioritaireRoute: CiblagePrioritaireRoute,
   GrilleScoringRoute: GrilleScoringRoute,
+  LoginRoute: LoginRoute,
   MotsClesRoute: MotsClesRoute,
   NouvelleRechercheRoute: NouvelleRechercheRoute,
   OpportunitesRoute: OpportunitesRouteWithChildren,
   ProspectsRoute: ProspectsRoute,
+  RapportHebdomadaireRoute: RapportHebdomadaireRoute,
   SourcesDeVeilleRoute: SourcesDeVeilleRoute,
+  UtilisateursRoute: UtilisateursRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
