@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAlizeStore } from "@/lib/alize-store";
+import { Guarded } from "./Guarded";
 import type { Opportunity, Tone } from "@/lib/alize-data";
 import { Breadcrumbs, EmptyState, PageHeader, ScoreBadge, StatusBadge, Surface } from "./Primitives";
 
@@ -31,7 +32,7 @@ export function OpportunityDetailPage({ id }: { id: string }) {
       <PageHeader
         title={opportunity.company}
         subtitle={`${opportunity.city}, ${opportunity.country} · ${opportunity.sector} · ${opportunity.size} employés`}
-        action={<div className="flex flex-wrap gap-2"><Button asChild variant="outline"><Link to="/opportunites"><ArrowLeft />Retour</Link></Button><Button onClick={() => setOpportunityStatus(opportunity.id, "En cours")}>Passer en cours</Button></div>}
+        action={<div className="flex flex-wrap gap-2"><Button asChild variant="outline"><Link to="/opportunites"><ArrowLeft />Retour</Link></Button><Guarded perm="editOpp"><Button onClick={() => setOpportunityStatus(opportunity.id, "En cours")}>Passer en cours</Button></Guarded></div>}
       />
 
       <div className="grid gap-6 xl:grid-cols-[1fr_380px]">
@@ -70,7 +71,7 @@ export function OpportunityDetailPage({ id }: { id: string }) {
           <Surface className="sticky top-24">
             <div className="flex items-center gap-3"><div className="grid size-10 place-items-center rounded-xl bg-primary text-primary-foreground"><Sparkles className="size-5" /></div><div><h2 className="font-display text-lg font-semibold">Assistant de prospection IA</h2><p className="text-xs text-muted-foreground">Génération simulée depuis la mock data</p></div></div>
             <Select value={tone} onValueChange={(value) => setTone(value as Tone)}><SelectTrigger className="mt-4"><SelectValue /></SelectTrigger><SelectContent>{tones.map((item) => <SelectItem key={item} value={item}>{item}</SelectItem>)}</SelectContent></Select>
-            <div className="mt-4 grid gap-2">{actions.map((action) => <Button key={action} variant={action === assistantAction ? "default" : "outline"} onClick={() => { setAssistantAction(action); setAssistantOpen(true); }}>{action}</Button>)}</div>
+            <div className="mt-4 grid gap-2">{actions.map((action) => <Guarded key={action} perm="aiMessage"><Button variant={action === assistantAction ? "default" : "outline"} onClick={() => { setAssistantAction(action); setAssistantOpen(true); }}>{action}</Button></Guarded>)}</div>
             <div className="mt-5 rounded-xl bg-panel-soft p-4 text-sm leading-6 text-muted-foreground">Meilleur contact recommandé : <span className="font-semibold text-foreground">{primaryContact?.name}</span>, {primaryContact?.role}.</div>
           </Surface>
         </aside>

@@ -9,8 +9,9 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 import { Toaster } from "@/components/ui/sonner";
-import { AppLayout } from "@/components/alize/Layout";
 import { AlizeStoreProvider } from "@/lib/alize-store";
+import { AuthGate } from "@/components/alize/AuthGate";
+import { AuthProvider } from "@/lib/alize-auth";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -117,12 +118,14 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <AuthProvider>
       <AlizeStoreProvider>
-        <AppLayout>
+        <AuthGate>
           <Outlet />
-        </AppLayout>
+        </AuthGate>
         <Toaster richColors position="top-right" />
       </AlizeStoreProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

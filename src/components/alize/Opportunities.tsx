@@ -1,4 +1,7 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useSearch } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { useAuth } from "@/lib/alize-auth";
+import { Guarded } from "./Guarded";
 import { Archive, ArrowDownUp, CheckSquare, FileDown, Mail, MoreHorizontal, RotateCcw, Search, StickyNote } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
@@ -28,6 +31,8 @@ const statusTabs: { label: string; value: "all" | OpportunityStatus }[] = [
 export function OpportunitiesPage() {
   const { opportunities, setOpportunityStatus, addOpportunityNote, archiveMany, setManyStatus } = useAlizeStore();
   const visible = useVisibleDelay();
+  const search = useSearch({ strict: false }) as { status?: string; country?: string };
+  const { can } = useAuth();
   const [query, setQuery] = useState("");
   const [country, setCountry] = useState("all");
   const [city, setCity] = useState("all");
@@ -46,6 +51,12 @@ export function OpportunitiesPage() {
   const [noteFor, setNoteFor] = useState<Opportunity | null>(null);
   const [note, setNote] = useState("");
   const [messageFor, setMessageFor] = useState<Opportunity | null>(null);
+
+  useEffect(() => {
+    if (search.status) setStatus(search.status as OpportunityStatus);
+    if (search.country) setCountry(search.country);
+    if (search.status || search.country) { setPage(1); toast("Filtres appliqués."); }
+  }, [search.status, search.country]);
 
   const cities = useMemo(() => Array.from(new Set(opportunities.map((item) => item.city))).sort(), [opportunities]);
   const filtered = useMemo(() => {
@@ -107,13 +118,13 @@ export function OpportunitiesPage() {
         </div>
       </Surface>
 
-      {selected.length > 0 ? <Surface className="mb-5 flex flex-wrap items-center justify-between gap-3 bg-secondary"><div className="font-semibold text-secondary-foreground">{selected.length} opportunité{selected.length > 1 ? "s" : ""} sélectionnée{selected.length > 1 ? "s" : ""}</div><div className="flex flex-wrap gap-2"><Button size="sm" onClick={() => setManyStatus(selected, "Priorité A")}><CheckSquare />Ajouter à Priorité A</Button><Button size="sm" variant="outline" onClick={() => setManyStatus(selected, "En cours")}>Changer le statut</Button><Button size="sm" variant="outline" onClick={() => archiveMany(selected)}><Archive />Archiver</Button><Button size="sm" variant="outline" onClick={() => toast.success("Export de la sélection généré en simulation")}><FileDown />Exporter sélection</Button></div></Surface> : null}
+      {selected.length > 0 ? <Surface className="mb-5 flex flex-wrap items-center justify-between gap-3 bg-secondary"><div className="font-semibold text-secondary-foreground">{selected.length} opportunité{selected.length > 1 ? "s" : ""} sélectionnée{selected.length > 1 ? "s" : ""}</div><div className="flex flex-wrap gap-2"><Guarded perm="editOpp"><Button size="sm" onClick={() => setManyStatus(selected, "Priorité A")}><CheckSquare />Ajouter à Priorité A</Button></Guarded><Guarded perm="editOpp"><Button size="sm" variant="outline" onClick={() => setManyStatus(selected, "En cours")}>Changer le statut</Button></Guarded><Guarded perm="archiveOpp"><Button size="sm" variant="outline" onClick={() => archiveMany(selected)}><Archive />Archiver</Button></Guarded><Button size="sm" variant="outline" onClick={() => toast.success("Export de la sélection généré en simulation")}><FileDown />Exporter sélection</Button></div></Surface> : null}
 
       {!visible ? <SkeletonRows /> : (
         <div className={tableWrap}>
           <table className="w-full border-collapse">
             <thead><tr className="border-b bg-panel-soft"><th className={th}><Checkbox checked={allOnPage} onCheckedChange={selectPage} /></th>{[["Entreprise", "company"], ["Pays", "country"], ["Taille", "size"], ["Score", "score"], ["Date", "detectedAt"]].map(([label, key]) => <th key={key} className={th}><Button variant="ghost" size="sm" onClick={() => toggleSort(key as SortKey)}>{label}<ArrowDownUp className="size-3" /></Button></th>)}<th className={th}>Opportunité</th><th className={th}>Ville</th><th className={th}>Secteur</th><th className={th}>Signal détecté</th><th className={th}>Statut</th><th className={th}>Actions</th></tr></thead>
-            <tbody>{pageItems.map((opp) => <tr key={opp.id} className="border-b transition hover:bg-secondary/70"><td className={td}><Checkbox checked={selected.includes(opp.id)} onCheckedChange={() => toggleSelect(opp.id)} /></td><td className={td}><Link to="/opportunites/$id" params={{ id: opp.id }} className="font-semibold text-primary hover:underline">{opp.company}</Link></td><td className={td}>{opp.country}</td><td className={td}>{opp.size}</td><td className={td}><ScoreBadge score={opp.score} /></td><td className={td}>{formatDate(opp.detectedAt)}</td><td className={td}>{opp.opportunity}</td><td className={td}>{opp.city}</td><td className={td}>{opp.sector}</td><td className="min-w-[220px] px-4 py-3 text-sm text-muted-foreground">{opp.signal}</td><td className={td}><StatusBadge status={opp.status} /></td><td className={td}><RowActions opp={opp} onStatus={setOpportunityStatus} onNote={() => { setNoteFor(opp); setNote(""); }} onMessage={() => setMessageFor(opp)} /></td></tr>)}</tbody>
+            <tbody>{pageItems.map((opp) => <tr key={opp.id} className="border-b transition hover:bg-secondary/70"><td className={td}><Checkbox checked={selected.includes(opp.id)} onCheckedChange={() => toggleSelect(opp.id)} /></td><td className={td}><Link to="/opportunites/$id" params={{ id: opp.id }} className="font-semibold text-primary hover:underline">{opp.company}</Link></td><td className={td}>{opp.country}</td><td className={td}>{opp.size}</td><td className={td}><ScoreBadge score={opp.score} /></td><td className={td}>{formatDate(opp.detectedAt)}</td><td className={td}>{opp.opportunity}</td><td className={td}>{opp.city}</td><td className={td}>{opp.sector}</td><td className="min-w-[220px] px-4 py-3 text-sm text-muted-foreground">{opp.signal}</td><td className={td}><StatusBadge status={opp.status} /></td><td className={td}><RowActions canEdit={can("editOpp")} canArchive={can("archiveOpp")} canMessage={can("aiMessage")} opp={opp} onStatus={setOpportunityStatus} onNote={() => { setNoteFor(opp); setNote(""); }} onMessage={() => setMessageFor(opp)} /></td></tr>)}</tbody>
           </table>
           {pageItems.length === 0 ? <EmptyState label="Aucune opportunité ne correspond aux filtres." /> : null}
         </div>
@@ -130,9 +141,11 @@ function FilterSelect({ value, onValueChange, placeholder, options, labels }: { 
   return <Select value={value} onValueChange={(v) => { onValueChange(v); }}><SelectTrigger><SelectValue placeholder={placeholder} /></SelectTrigger><SelectContent><SelectItem value="all">{placeholder}</SelectItem>{options.map((item) => <SelectItem key={item} value={item}>{labels?.[item] ?? item}</SelectItem>)}</SelectContent></Select>;
 }
 
-function RowActions({ opp, onStatus, onNote, onMessage }: { opp: Opportunity; onStatus: (id: string, status: OpportunityStatus) => void; onNote: () => void; onMessage: () => void }) {
-  return <DropdownMenu><DropdownMenuTrigger asChild><Button variant="ghost" size="icon" aria-label="Actions"><MoreHorizontal /></Button></DropdownMenuTrigger><DropdownMenuContent align="end"><DropdownMenuItem asChild><Link to="/opportunites/$id" params={{ id: opp.id }}>Voir le détail</Link></DropdownMenuItem><DropdownMenuItem onClick={() => onStatus(opp.id, "Priorité A")}>Passer en priorité A</DropdownMenuItem><DropdownMenuItem onClick={() => onStatus(opp.id, "À qualifier")}>Marquer à qualifier</DropdownMenuItem><DropdownMenuItem onClick={() => onStatus(opp.id, "À contacter")}>Marquer à contacter</DropdownMenuItem><DropdownMenuItem onClick={() => onStatus(opp.id, "En cours")}>Passer en cours</DropdownMenuItem><DropdownMenuItem onClick={onNote}><StickyNote className="size-4" />Ajouter une note</DropdownMenuItem><DropdownMenuItem onClick={onMessage}><Mail className="size-4" />Générer un message</DropdownMenuItem><DropdownMenuItem onClick={() => onStatus(opp.id, "Archivée")}>Archiver</DropdownMenuItem></DropdownMenuContent></DropdownMenu>;
+function RowActions({ opp, onStatus, onNote, onMessage, canEdit, canArchive, canMessage }: { opp: Opportunity; onStatus: (id: string, status: OpportunityStatus) => void; onNote: () => void; onMessage: () => void; canEdit: boolean; canArchive: boolean; canMessage: boolean }) {
+  const lock = (ok: boolean) => (ok ? {} : { disabled: true, title: "Vous ne disposez pas des permissions nécessaires." });
+  return <DropdownMenu><DropdownMenuTrigger asChild><Button variant="ghost" size="icon" aria-label="Actions"><MoreHorizontal /></Button></DropdownMenuTrigger><DropdownMenuContent align="end"><DropdownMenuItem asChild><Link to="/opportunites/$id" params={{ id: opp.id }}>Voir le détail</Link></DropdownMenuItem><DropdownMenuItem {...lock(canEdit)} onClick={() => onStatus(opp.id, "Priorité A")}>Passer en priorité A</DropdownMenuItem><DropdownMenuItem {...lock(canEdit)} onClick={() => onStatus(opp.id, "À qualifier")}>Marquer à qualifier</DropdownMenuItem><DropdownMenuItem {...lock(canEdit)} onClick={() => onStatus(opp.id, "À contacter")}>Marquer à contacter</DropdownMenuItem><DropdownMenuItem {...lock(canEdit)} onClick={() => onStatus(opp.id, "En cours")}>Passer en cours</DropdownMenuItem><DropdownMenuItem {...lock(canEdit)} onClick={onNote}><StickyNote className="size-4" />Ajouter une note</DropdownMenuItem><DropdownMenuItem {...lock(canMessage)} onClick={onMessage}><Mail className="size-4" />Générer un message</DropdownMenuItem><DropdownMenuItem {...lock(canArchive)} onClick={() => onStatus(opp.id, "Archivée")}>Archiver</DropdownMenuItem>{!canEdit ? <p className="px-2 py-1.5 text-xs text-muted-foreground">Lecture seule pour votre rôle</p> : null}</DropdownMenuContent></DropdownMenu>;
 }
+
 
 function formatDate(value: string) {
   const [year, month, day] = value.split("-");
