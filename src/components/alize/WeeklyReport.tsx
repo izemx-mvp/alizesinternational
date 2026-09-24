@@ -89,7 +89,7 @@ export function WeeklyReportPage() {
       } />
 
       <Surface className="mb-5 print:hidden">
-        <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+        <div className="flex flex-col gap-4">
           <div className="flex flex-wrap items-center gap-2">
             <Button variant="outline" size="sm" disabled={weekIndex === 0} onClick={() => setWeekIndex((i) => i - 1)}><ChevronLeft />Semaine précédente</Button>
             <div className="flex items-center gap-2 rounded-lg bg-secondary px-4 py-2 text-sm font-semibold text-secondary-foreground"><CalendarDays className="size-4" />{weeks[weekIndex]?.label}</div>
