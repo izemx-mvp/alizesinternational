@@ -1,4 +1,4 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import {
   Bell,
   BrainCircuit,
@@ -7,6 +7,9 @@ import {
   ChevronRight,
   ClipboardList,
   DatabaseZap,
+  FileBarChart,
+  LogOut,
+  UsersRound,
   Gauge,
   LayoutDashboard,
   LifeBuoy,
@@ -23,6 +26,10 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { fullName, initials, routePermissions, useAuth } from "@/lib/alize-auth";
+import { toast } from "sonner";
 
 const groups = [
   { title: "Pilotage", links: [{ label: "Tableau de bord", to: "/", icon: LayoutDashboard }] },
@@ -35,16 +42,25 @@ const groups = [
     { label: "Sources de veille", to: "/sources-de-veille", icon: DatabaseZap },
     { label: "Mots-clés & typologies", to: "/mots-cles", icon: ClipboardList },
   ] },
+  { title: "Rapports", links: [
+    { label: "Rapport hebdomadaire", to: "/rapport-hebdomadaire", icon: FileBarChart },
+  ] },
   { title: "Configuration", links: [
     { label: "Grille de scoring", to: "/grille-scoring", icon: Gauge },
     { label: "Ciblage prioritaire", to: "/ciblage-prioritaire", icon: Target },
     { label: "Alertes", to: "/alertes", icon: Bell },
+    { label: "Utilisateurs & permissions", to: "/utilisateurs", icon: UsersRound },
   ] },
 ];
 
 export function AppLayout({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const [collapsed, setCollapsed] = useState(false);
+  const [confirmOut, setConfirmOut] = useState(false);
+  const { user, can, logout } = useAuth();
+  const navigate = useNavigate();
+  const allowedLink = (to: string) => { const r = routePermissions.find((x) => to.startsWith(x.prefix)); return !r || can(r.perm); };
+  const visibleGroups = groups.map((g) => ({ ...g, links: g.links.filter((l) => allowedLink(l.to)) })).filter((g) => g.links.length > 0);
   return (
     <TooltipProvider delayDuration={120}>
       <div className="min-h-screen bg-background text-foreground lg:flex">
@@ -61,7 +77,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
             ) : null}
           </div>
           <div className="flex-1 overflow-y-auto px-3 py-2">
-            {groups.map((group) => (
+            {visibleGroups.map((group) => (
               <div key={group.title} className="mb-5">
                 {!collapsed ? <p className="mb-2 px-3 text-[11px] font-bold uppercase tracking-widest text-sidebar-muted">{group.title}</p> : null}
                 <div className="space-y-1">
@@ -93,10 +109,22 @@ export function AppLayout({ children }: { children: ReactNode }) {
             ))}
           </div>
           <div className="border-t border-sidebar-foreground/10 p-4">
-            <div className={cn("flex items-center gap-3 rounded-xl bg-sidebar-foreground/5 p-3", collapsed && "justify-center p-2")}>
-              <Avatar className="size-10"><AvatarFallback>SM</AvatarFallback></Avatar>
-              {!collapsed ? <div className="min-w-0"><p className="truncate text-sm font-semibold">Sophie Martin</p><p className="truncate text-xs text-sidebar-muted">Responsable Commerciale</p></div> : null}
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className={cn("flex w-full items-center gap-3 rounded-xl bg-sidebar-foreground/5 p-3 text-left transition hover:bg-sidebar-foreground/10", collapsed && "justify-center p-2")}>
+                  <Avatar className="size-10"><AvatarFallback className="bg-sidebar-active text-sidebar-active-foreground">{user ? initials(user) : "?"}</AvatarFallback></Avatar>
+                  {!collapsed && user ? <div className="min-w-0"><p className="truncate text-sm font-semibold">{fullName(user)}</p><p className="truncate text-xs text-sidebar-muted">{user.role}</p></div> : null}
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent side="top" align="start" className="w-60">
+                <DropdownMenuLabel>{user?.email}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => user && navigate({ to: "/utilisateurs/$id", params: { id: user.id } })}><UserRound />Mon profil</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => toast("Paramètres du compte disponibles en simulation")}><Settings2 />Paramètres</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => setConfirmOut(true)} className="text-destructive focus:text-destructive"><LogOut />Déconnexion</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <Button variant="ghost" size="sm" onClick={() => setCollapsed(!collapsed)} className="mt-3 w-full text-sidebar-muted hover:bg-sidebar-foreground/10 hover:text-sidebar-foreground">
               {collapsed ? <ChevronRight /> : <ChevronLeft />}{!collapsed ? "Réduire" : null}
             </Button>
@@ -118,12 +146,18 @@ export function AppLayout({ children }: { children: ReactNode }) {
               </div>
             </div>
             <nav className="flex gap-2 overflow-x-auto px-4 pb-3 lg:hidden">
-              {groups.flatMap((group) => group.links).map((item) => <Link key={item.to} to={item.to} className="whitespace-nowrap rounded-full border bg-card px-3 py-1.5 text-xs text-muted-foreground">{item.label}</Link>)}
+              {visibleGroups.flatMap((group) => group.links).map((item) => <Link key={item.to} to={item.to} className="whitespace-nowrap rounded-full border bg-card px-3 py-1.5 text-xs text-muted-foreground">{item.label}</Link>)}
             </nav>
           </header>
           <main className="min-w-0 flex-1 p-4 lg:p-8">{children}</main>
         </div>
       </div>
+      <AlertDialog open={confirmOut} onOpenChange={setConfirmOut}>
+        <AlertDialogContent>
+          <AlertDialogHeader><AlertDialogTitle>Déconnexion</AlertDialogTitle><AlertDialogDescription>Voulez-vous vraiment vous déconnecter ?</AlertDialogDescription></AlertDialogHeader>
+          <AlertDialogFooter><AlertDialogCancel>Annuler</AlertDialogCancel><AlertDialogAction onClick={() => { logout(); navigate({ to: "/login" }); }}>Se déconnecter</AlertDialogAction></AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </TooltipProvider>
   );
 }
