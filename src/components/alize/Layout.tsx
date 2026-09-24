@@ -71,7 +71,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
             </div>
             {!collapsed ? (
               <div className="min-w-0">
-                <p className="truncate font-display text-sm font-semibold">ALIZÉ INTERNATIONAL</p>
+                <p className="truncate font-display text-sm font-semibold">ALIZÉS INTERNATIONAL</p>
                 <p className="truncate text-xs text-sidebar-muted">Prospection Événementielle IA</p>
               </div>
             ) : null}
@@ -135,7 +135,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
             <div className="flex min-h-16 items-center justify-between gap-4 px-4 lg:px-8">
               <div className="flex items-center gap-3 lg:hidden">
                 <div className="grid size-9 place-items-center rounded-lg bg-primary text-primary-foreground"><Sparkles className="size-4" /></div>
-                <div><p className="text-sm font-semibold">ALIZÉ INTERNATIONAL</p><p className="text-xs text-muted-foreground">Prospection IA</p></div>
+                <div><p className="text-sm font-semibold">ALIZÉS INTERNATIONAL</p><p className="text-xs text-muted-foreground">Prospection IA</p></div>
               </div>
               <div className="hidden items-center gap-2 rounded-full border bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground lg:flex">
                 <span className="size-2 rounded-full bg-success" /> Agent IA actif · Dernière analyse : il y a 12 min

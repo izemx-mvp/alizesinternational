@@ -3,9 +3,9 @@ import { UserProfilePage } from "@/components/alize/UserProfile";
 
 export const Route = createFileRoute("/utilisateurs/$id")({
   head: () => ({ meta: [
-    { title: "Profil utilisateur — ALIZÉ INTERNATIONAL" },
+    { title: "Profil utilisateur — ALIZÉS INTERNATIONAL" },
     { name: "description", content: "Profil, activité et historique d’un membre de l’équipe commerciale." },
-    { property: "og:title", content: "Profil utilisateur — ALIZÉ INTERNATIONAL" },
+    { property: "og:title", content: "Profil utilisateur — ALIZÉS INTERNATIONAL" },
     { property: "og:description", content: "Profil, activité et historique d’un membre de l’équipe commerciale." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
