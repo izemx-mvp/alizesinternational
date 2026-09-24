@@ -30,7 +30,8 @@ export function AuthGate({ children }: { children: ReactNode }) {
   if (isLogin) return <>{children}</>;
 
   const rule = routePermissions.find((r) => pathname.startsWith(r.prefix));
-  const allowed = !rule || can(rule.perm);
+  const isProfile = pathname.startsWith("/utilisateurs/");
+  const allowed = isProfile ? (pathname === `/utilisateurs/${user?.id}` || can("users") || can("reports")) : (!rule || can(rule.perm));
   return (
     <AppLayout>
       {allowed ? children : (
