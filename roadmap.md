@@ -1,4 +1,4 @@
-# Roadmap MVP ALIZÉ INTERNATIONAL
+# Roadmap MVP ALIZÉS INTERNATIONAL
 
 - [x] Mettre en place l'identité visuelle et la navigation multi-pages.
 - [x] Créer la mock data riche pour opportunités, prospects, contacts, sources, mots-clés, scoring, ciblage et alertes.

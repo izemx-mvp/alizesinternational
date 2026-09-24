@@ -62,7 +62,7 @@ export function LoginPage() {
       <div className="page-fade relative w-full max-w-md">
         <div className="mb-6 flex flex-col items-center text-center">
           <div className="grid size-14 place-items-center rounded-2xl bg-sidebar text-sidebar-foreground shadow-panel"><BrainCircuit className="size-7" /></div>
-          <h1 className="mt-4 text-2xl font-semibold">ALIZÉ INTERNATIONAL</h1>
+          <h1 className="mt-4 text-2xl font-semibold">ALIZÉS INTERNATIONAL</h1>
           <p className="mt-1 text-sm text-muted-foreground">Plateforme de Prospection Événementielle IA</p>
         </div>
         <form onSubmit={submit} noValidate className="rounded-2xl border bg-card p-6 shadow-panel">
