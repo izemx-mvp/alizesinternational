@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import { cloneElement, type ReactElement } from "react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useAuth, type Permission } from "@/lib/alize-auth";
 
@@ -10,7 +10,7 @@ export function Guarded({ perm, children }: { perm: Permission; children: ReactE
   if (can(perm)) return children;
   return (
     <Tooltip>
-      <TooltipTrigger asChild><span tabIndex={0} className="inline-flex cursor-not-allowed">{{ ...children, props: { ...children.props, disabled: true } }}</span></TooltipTrigger>
+      <TooltipTrigger asChild><span tabIndex={0} className="inline-flex cursor-not-allowed">{cloneElement(children, { disabled: true })}</span></TooltipTrigger>
       <TooltipContent>{NO_PERM}</TooltipContent>
     </Tooltip>
   );
